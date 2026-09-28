@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>徐菲 XUFEI · INTJ | 个人主页与多维画卷</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@600;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #07070a;
+      --bg-card: rgba(16, 16, 22, 0.78);
+      --accent: #FF5500;
+      --accent-glow: rgba(255, 85, 0, 0.4);
+      --accent-grad: linear-gradient(135deg, #FF7700 0%, #FF3300 100%);
+      --text-main: #f5f5f7;
+      --text-muted: #9595a2;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(255, 85, 0, 0.5);
+      --font-display: 'Bebas Neue', 'Space Grotesk', sans-serif;
+      --font-body: 'Noto Sans SC', -apple-system, sans-serif;
+      --font-serif: 'Noto Serif SC', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--bg-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 赛博流动波纹 Canvas */
+    #cyberFlowCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    /* 开屏极速加载推进器 */
+    .site-loader {
+      position: fixed;
+      inset: 0;
+      background: #050508;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.8s cubic-bezier(0.75, 0, 0.15, 1), opacity 0.7s ease;
+      cursor: pointer;
+    }
+    .site-loader.dissolve {
+      opacity: 0;
+      transform: scale(1.06);
+      pointer-events: none;
+    }
+    .loader-preview {
+      width: 130px;
+      height: 180px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1.6rem;
+      border: 1px solid var(--border-active);
+      box-shadow: 0 0 35px var(--accent-glow);
+      background: #111;
+    }
+    .loader-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .loader-track {
+      width: 240px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+    .loader-bar {
+      width: 0%;
+      height: 100%;
+      background: var(--accent-grad);
+      box-shadow: 0 0 10px var(--accent);
+      transition: width 0.08s linear;
+    }
+    .loader-text {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+    }
+    .loader-tip {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 6px;
+    }
+
+    /* 顶部悬浮导航与背景音乐旋钮 */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(8, 8, 11, 0.72);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .nav-logo .en {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.15em;
+    }
+    .nav-logo .cn {
+      font-size: 0.8rem;
+      padding: 2px 7px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      border-radius: 3px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+    .nav-right-tools {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    /* 背景音乐常驻电台 */
+    .bgm-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .bgm-chip:hover {
+      border-color: var(--accent);
+      background: rgba(255, 85, 0, 0.1);
+    }
+    .vinyl-disc {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(#111, #111 2px, #333 3px, #111 4px);
+      border: 2px solid var(--accent);
+      animation: spinVinyl 3s linear infinite;
+      animation-play-state: paused;
+    }
+    .bgm-chip.playing .vinyl-disc {
+      animation-play-state: running;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    @keyframes spinVinyl { 100% { transform: rotate(360deg); } }
+    .bgm-title {
+      font-size: 0.76rem;
+      color: #dedee8;
+      font-weight: 600;
+    }
+    .nav-btn {
+      padding: 0.45rem 1.2rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .nav-btn:hover {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    /* ═══════════ 1. 首页封面与多维画卷 ═══════════ */
+    .hero-carousel {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      min-height: 720px;
+      overflow: hidden;
+      background: #000;
+      z-index: 2;
+    }
+    .carousel-strip {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .carousel-slide {
+      position: relative;
+      width: 100vw;
+      height: 100%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .slide-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      filter: contrast(110%) brightness(0.85);
+      transition: transform 8s ease-out;
+    }
+    .carousel-slide.active .slide-bg img {
+      transform: scale(1.06);
+    }
+    .slide-mask {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(90deg, rgba(7, 7, 10, 0.95) 0%, rgba(7, 7, 10, 0.72) 42%, rgba(7, 7, 10, 0.2) 80%, rgba(7, 7, 10, 0.8) 100%),
+                  radial-gradient(circle at 80% 50%, transparent 20%, rgba(7, 7, 10, 0.6) 80%);
+    }
+    .slide-foreground {
+      position: relative;
+      z-index: 3;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+    .profile-meta-lead {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      color: #dfdfec;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.2rem;
+    }
+    .profile-meta-lead::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+    }
+    .profile-name-giant {
+      font-size: clamp(3.5rem, 6.5vw, 6.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 1.2rem;
+    }
+    .profile-slogan {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: clamp(1.2rem, 2vw, 1.8rem);
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1.4rem;
+    }
+    .profile-slogan::after {
+      content: '';
+      display: inline-block;
+      width: 45px;
+      height: 3px;
+      background: var(--accent);
+    }
+    .profile-bio {
+      color: #d1d1dc;
+      line-height: 1.85;
+      font-size: 1.02rem;
+      max-width: 580px;
+      margin-bottom: 2rem;
+    }
+    .profile-tags {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      max-width: 620px;
+      margin-bottom: 2.4rem;
+    }
+    .pill-tag {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #c5c5d2;
+      padding: 0.35rem 0.9rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+    }
+    .profile-btn-group {
+      display: flex;
+      gap: 1.2rem;
+    }
+    .btn-orange-solid {
+      padding: 0.85rem 2rem;
+      background: var(--accent-grad);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.92rem;
+      border-radius: 4px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transition: all 0.3s;
+    }
+    .btn-orange-solid:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 26px rgba(255, 85, 0, 0.6);
+    }
+    .btn-dark-hollow {
+      padding: 0.85rem 1.8rem;
+      border: 1px solid var(--border-subtle);
+      background: rgba(20, 20, 28, 0.6);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.92rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-dark-hollow:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .slide-badge-top {
+      position: absolute;
+      top: 6.5rem;
+      right: 4rem;
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.5);
+      border-left: 2px solid var(--accent);
+      padding-left: 10px;
+    }
+    .slide-badge-top b { color: #fff; margin-right: 6px; }
+    .carousel-nav-wrap {
+      position: absolute;
+      bottom: 3rem;
+      right: 4rem;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .carousel-arrow {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid var(--border-active);
+      background: rgba(14, 14, 20, 0.7);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+    }
+    .carousel-arrow:hover { background: var(--accent); color: #000; }
+    .carousel-dots { display: flex; gap: 0.6rem; }
+    .carousel-dot {
+      width: 24px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .carousel-dot.active {
+      background: var(--accent);
+      width: 44px;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* ═══════════ 2. 兴趣与生活：3D 旋转星球展示 ═══════════ */
+    .planet-section {
+      position: relative;
+      padding: 7rem 0 9rem;
+      background: radial-gradient(circle at 50% 60%, #0d1222 0%, #07070a 70%);
+      z-index: 2;
+      overflow: hidden;
+      perspective: 1200px;
+    }
+    .planet-stage {
+      position: relative;
+      width: 100%;
+      height: 540px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      margin-top: 2rem;
+    }
+    .central-planet {
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #a2c6ff 30%, #2e4a88 70%, #0e1b3d 100%);
+      box-shadow: 0 0 60px rgba(100, 160, 255, 0.6), 0 0 120px rgba(70, 120, 255, 0.3);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .orbit-ring-3d {
+      position: absolute;
+      width: 660px;
+      height: 660px;
+      transform-style: preserve-3d;
+      transform: rotateX(16deg) rotateY(0deg);
+      cursor: grab;
+      user-select: none;
+    }
+    .orbit-ring-3d:active { cursor: grabbing; }
+    .orbit-card-item {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 165px;
+      height: 215px;
+      margin-top: -107px;
+      margin-left: -82px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: #141724;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+      transform-style: preserve-3d;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .orbit-card-item:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 25px var(--accent-glow);
+    }
+    .orbit-card-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .orbit-card-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0.7rem;
+      background: linear-gradient(180deg, transparent 0%, rgba(5, 5, 8, 0.95) 100%);
+      font-size: 0.78rem;
+      color: #fff;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    /* ═══════════ 3. PPT 视觉作品矩阵画廊 ═══════════ */
+    .tools-section {
+      position: relative;
+      padding: 6.5rem 2.5rem;
+      z-index: 2;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .ppt-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .ppt-card-item {
+      background: #0f1017;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.35s;
+    }
+    .ppt-card-item:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.7), 0 0 20px var(--accent-glow);
+    }
+    .ppt-card-inner {
+      width: 100%;
+      height: 100%;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .ppt-meta-num {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+    .ppt-main-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+      margin: 0.5rem 0;
+    }
+    .ppt-sub-quote {
+      font-size: 0.8rem;
+      color: #aaaab8;
+      line-height: 1.6;
+    }
+
+    /* ═══════════ 4. 工具与能力板块 ═══════════ */
+    .tools-lead-quote {
+      font-size: 1.15rem;
+      color: #d2d2dc;
+      line-height: 1.8;
+      max-width: 900px;
+      margin-bottom: 3.5rem;
+      border-left: 3px solid var(--accent);
+      padding-left: 1.2rem;
+    }
+    .tools-lead-quote b { color: var(--accent); }
+    .tools-grid-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .tool-frame-card {
+      background: rgba(14, 14, 20, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 2.2rem 1.8rem;
+      transition: all 0.35s ease;
+      backdrop-filter: blur(10px);
+    }
+    .tool-frame-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-glow);
+    }
+    .tool-tag-en {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+    .tool-title-cn { font-size: 1.45rem; font-weight: 700; color: #fff; margin-bottom: 1rem; }
+    .tool-desc-text { font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem; }
+    .tool-chips-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .tool-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.78rem;
+      color: #b5b5c2;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    /* ═══════════ 5. 个人成果板块 ═══════════ */
+    .works-section {
+      position: relative;
+      padding: 6.5rem 2.5rem;
+      z-index: 2;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 2.2rem;
+      margin-top: 3.5rem;
+    }
+    .work-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.35s ease;
+    }
+    .work-card:hover {
+      border-color: var(--border-active);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--accent-glow);
+    }
+    .work-banner-plane {
+      height: 190px;
+      background: radial-gradient(circle at 50% 30%, #1e153b 0%, #0c0817 65%, #05040a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .work-banner-audio {
+      height: 190px;
+      background: radial-gradient(circle at 50% 50%, #2b1122 0%, #120914 70%, #080509 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid var(--border-subtle);
+      overflow: hidden;
+    }
+    .audio-waves-ani {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      height: 40px;
+    }
+    .wave-bar {
+      width: 4px;
+      background: #FF5500;
+      border-radius: 2px;
+      animation: waveBeat 1.2s ease-in-out infinite alternate;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.2s; height: 35px; }
+    .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 20px; }
+    .wave-bar:nth-child(4) { animation-delay: 0.1s; height: 40px; }
+    .wave-bar:nth-child(5) { animation-delay: 0.3s; height: 26px; }
+    @keyframes waveBeat {
+      0% { transform: scaleY(0.3); opacity: 0.4; }
+      100% { transform: scaleY(1); opacity: 1; }
+    }
+    .work-banner-landscape {
+      height: 190px;
+      background: radial-gradient(circle at 50% 30%, #0a2624 0%, #041212 65%, #020808 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid var(--border-subtle);
+      overflow: hidden;
+    }
+    .landscape-glow {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(23, 192, 141, 0.4) 0%, transparent 70%);
+      filter: blur(20px);
+    }
+    .work-body {
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+    .work-tag-header {
+      color: var(--accent);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+    .work-title { font-size: 1.3rem; color: #fff; margin-bottom: 0.6rem; }
+    .work-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.65;
+      margin-bottom: 1.4rem;
+      flex-grow: 1;
+    }
+    .work-actions-row { display: flex; gap: 0.8rem; }
+    .work-btn-play {
+      flex: 1;
+      padding: 0.8rem;
+      background: var(--accent-grad);
+      color: #000;
+      border: none;
+      font-weight: 700;
+      text-align: center;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .work-btn-play:hover {
+      box-shadow: 0 4px 20px rgba(255, 85, 0, 0.6);
+      transform: translateY(-2px);
+    }
+    .work-btn-outline {
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .work-btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* 音乐控制条 */
+    .inline-audio-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .audio-btn-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      color: #000;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+    .audio-btn-circle:hover { transform: scale(1.08); }
+    .audio-progress-wrap { flex-grow: 1; }
+    .audio-time-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .audio-bar-rail {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .audio-bar-filled {
+      width: 0%;
+      height: 100%;
+      background: var(--accent);
+      transition: width 0.1s linear;
+    }
+
+    /* ═══════════ 6. 弹窗系统（飞机大战 & 证书放大 Lightbox） ═══════════ */
+    .game-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 5, 8, 0.88);
+      backdrop-filter: blur(12px);
+      z-index: 100000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .game-modal-overlay.active { display: flex; }
+    .game-modal-window {
+      width: 100%;
+      max-width: 900px;
+      background: #141724;
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .game-modal-header {
+      padding: 12px 20px;
+      background: #0d0f1a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 85, 0, 0.3);
+    }
+    .game-modal-header b { color: #f0c040; font-size: 1.1rem; }
+    .game-modal-close {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .game-modal-body {
+      height: 680px;
+      width: 100%;
+      background: #000;
+    }
+    .game-modal-body iframe { width: 100%; height: 100%; border: none; }
+
+    /* 证书高清放大 Lightbox */
+    .cert-lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 3, 5, 0.92);
+      backdrop-filter: blur(16px);
+      z-index: 100001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      cursor: zoom-out;
+    }
+    .cert-lightbox-overlay.active { display: flex; }
+    .cert-lightbox-img {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 8px;
+      border: 1px solid var(--border-active);
+      box-shadow: 0 0 60px rgba(255, 85, 0, 0.35);
+      object-fit: contain;
+      cursor: default;
+    }
+
+    /* ═══════════ AI 证书真实走马灯 ═══════════ */
+    .certs-wrapper {
+      width: 100%;
+      overflow: hidden;
+      margin-top: 2.5rem;
+      padding: 1rem 0;
+    }
+    .certs-track {
+      display: flex;
+      gap: 1.6rem;
+      width: max-content;
+      animation: certScroll 35s linear infinite;
+    }
+    .certs-track:hover { animation-play-state: paused; }
+    @keyframes certScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .cert-item-card {
+      width: 260px;
+      height: 180px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      background: #141419;
+      flex-shrink: 0;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .cert-item-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 10px 25px rgba(255, 85, 0, 0.4);
+    }
+    .cert-item-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cert-hover-hint {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.85rem;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .cert-item-card:hover .cert-hover-hint { opacity: 1; }
+
+    /* 通用标题 */
+    .sec-head {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 3.5rem;
+    }
+    .sec-eyebrow {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .sec-title { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; margin-bottom: 1rem; }
+    .sec-sub { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; }
+
+    /* 页脚 */
+    .footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 992px) {
+      .slide-foreground { padding: 0 2rem; }
+      .carousel-nav-wrap { right: 2rem; bottom: 2rem; }
+      .slide-badge-top { right: 2rem; }
+      .orbit-ring-3d { width: 440px; height: 440px; }
+      .orbit-card-item { width: 135px; height: 175px; }
+      .ppt-gallery-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .game-modal-body { height: 500px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 全局赛博动态波纹与流动线条画布 -->
+  <canvas id="cyberFlowCanvas"></canvas>
+
+  <!-- 1. 背景音乐：FireFly7 - running up on hill (采用你的 mp4 文件稳定解码播放) -->
+  <video id="bgmAudio" style="position:fixed;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;" playsinline loop>
+    <source src="assets/5c2b6dbfc09470cd1225c02deb96a078.mp4" type="video/mp4">
+  </video>
+
+  <!-- 2. AI 单曲音乐（成果试听，绑定 assets/ai_music.mp3） -->
+  <audio id="aiMusicAudio" preload="auto">
+    <source src="assets/ai_music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ═══════════ 开屏加载进度条 ═══════════ -->
+  <div class="site-loader" id="siteLoader" title="点击可直接揭开主页">
+    <div class="loader-preview">
+      <img src="assets/特写.jpg" alt="徐菲封面大片" />
+    </div>
+    <div class="loader-track">
+      <div class="loader-bar" id="loaderBar"></div>
+    </div>
+    <span class="loader-text" id="loaderPercent">0%</span>
+    <span class="loader-tip">♬ 进站自动起播 FireFly7 纯音乐氛围</span>
+  </div>
+
+  <!-- 顶部导航 -->
+  <nav class="nav">
+    <a href="#hero" class="nav-logo">
+      <span class="en">XUFEI</span>
+      <span class="cn">徐菲</span>
+    </a>
+    <div class="nav-links">
+      <a href="#hero">认识我</a>
+      <a href="#planet">生活美好</a>
+      <a href="#ppt-works">PPT作品</a>
+      <a href="#tools">工具能力</a>
+      <a href="#works">AI成果</a>
+      <a href="#certs">AI证书</a>
+      <a href="#contact">留言板</a>
+    </div>
+    <div class="nav-right-tools">
+      <!-- FireFly7 背景音乐播放控制小组件 -->
+      <div class="bgm-chip" id="bgmToggleBtn" title="点击开关 FireFly7 - running up on hill 纯音乐">
+        <span class="vinyl-disc"></span>
+        <span class="bgm-title" id="bgmStatusLabel">BGM: Running Up...</span>
+      </div>
+      <a href="#contact" class="nav-btn">SAY HI ↵</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════ 1. 首页封面与多维画卷 ═══════════ -->
+  <section id="hero" class="hero-carousel">
+    <div class="carousel-strip" id="carouselStrip">
+      
+      <!-- 卷一：封面主视觉（底层：assets/特写.jpg） -->
+      <div class="carousel-slide active">
+        <div class="slide-bg">
+          <img src="assets/特写.jpg" alt="徐菲个人特写封面" />
+        </div>
+        <div class="slide-mask"></div>
+        <div class="slide-badge-top"><b>01</b> PORTFOLIO / 2026</div>
+        <div class="slide-foreground">
+          <p class="profile-meta-lead">准大一自我介绍 · 2026</p>
+          <h1 class="profile-name-giant">徐菲</h1>
+          <div class="profile-slogan">有点慢热，但一直在认真升级</div>
+          <p class="profile-bio">
+            我是一名即将进入湖南中医药大学康复治疗学专业的准大一女生。<br>
+            喜欢把好奇心变成小作品，也希望在大学里认识愿意交流的老师和优秀学长学姐。
+          </p>
+          <div class="profile-tags">
+            <span class="pill-tag">康复治疗学新生</span>
+            <span class="pill-tag">AI 自学中</span>
+            <span class="pill-tag">PPT 练习中</span>
+            <span class="pill-tag">AI飞机大战</span>
+            <span class="pill-tag">舞蹈长期爱好</span>
+            <span class="pill-tag">数码数智探索</span>
+          </div>
+          <div class="profile-btn-group">
+            <a href="#works" class="btn-orange-solid">看看我的小作品</a>
+            <a href="#certs" class="btn-dark-hollow">AI 学习记录</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 卷二：潜心打磨（底层：指定的 assets/photo9.jpg） -->
+      <div class="carousel-slide">
+        <div class="slide-bg">
+          <img src="assets/photo9.jpg" alt="沉潜打磨生活照片" />
+        </div>
+        <div class="slide-mask"></div>
+        <div class="slide-badge-top"><b>02</b> PORTFOLIO / 2026</div>
+        <div class="slide-foreground">
+          <p class="profile-meta-lead">节奏与坚持 · 2026</p>
+          <h1 class="profile-name-giant">积蓄力量</h1>
+          <div class="profile-slogan">慢一点没关系，想把每份兴趣做成小作品</div>
+          <p class="profile-bio">
+            尽管才刚起步，但一直在认真升级。不着急成为谁，先记录每一次小小的向前。<br>
+            生活上追求幸福与平衡，学习上积极进取，身边一切皆为良师。
+          </p>
+          <div class="profile-tags">
+            <span class="pill-tag">专注打磨</span>
+            <span class="pill-tag">步履不停</span>
+            <span class="pill-tag">做扎实的小事</span>
+            <span class="pill-tag">INTJ 架构思维</span>
+          </div>
+          <div class="profile-btn-group">
+            <a href="#tools" class="btn-orange-solid">查看我的使用说明</a>
+            <a href="#planet" class="btn-dark-hollow">探索兴趣星体</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 卷三：反思共创（底层：指定的 assets/photo7.jpg） -->
+      <div class="carousel-slide">
+        <div class="slide-bg">
+          <img src="assets/photo7.jpg" alt="身体自律日常照片" />
+        </div>
+        <div class="slide-mask"></div>
+        <div class="slide-badge-top"><b>03</b> PORTFOLIO / 2026</div>
+        <div class="slide-foreground">
+          <p class="profile-meta-lead">自律与魄力 · 2026</p>
+          <h1 class="profile-name-giant">勇敢前行</h1>
+          <div class="profile-slogan">身体比语言更勇敢，在秩序中追求极致</div>
+          <p class="profile-bio">
+            我不完美，但我会反思、会调整、会继续。如何把想法落地，是我一直在思考的课题。<br>
+            身体比语言更勇敢，我想把这种勇敢也带到大学的学习与竞赛攻坚中。
+          </p>
+          <div class="profile-tags">
+            <span class="pill-tag">批判性反思</span>
+            <span class="pill-tag">知行合一</span>
+            <span class="pill-tag">自律意志</span>
+            <span class="pill-tag">中国舞十级坚韧</span>
+          </div>
+          <div class="profile-btn-group">
+            <a href="#contact" class="btn-orange-solid">与我取得联系</a>
+            <a href="#works" class="btn-dark-hollow">体验飞机大战</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 左右滑动切换器 -->
+    <div class="carousel-nav-wrap">
+      <button class="carousel-arrow" id="btnPrev" aria-label="上一页">←</button>
+      <div class="carousel-dots">
+        <span class="carousel-dot active" data-idx="0"></span>
+        <span class="carousel-dot" data-idx="1"></span>
+        <span class="carousel-dot" data-idx="2"></span>
+      </div>
+      <button class="carousel-arrow" id="btnNext" aria-label="下一页">→</button>
+    </div>
+  </section>
+
+  <!-- ═══════════ 2. 兴趣与生活：3D 旋转星球展示 ═══════════ -->
+  <section id="planet" class="planet-section">
+    <div class="sec-head">
+      <span class="sec-eyebrow">03 / 生活美好</span>
+      <h2 class="sec-title">生活很美好，我爱也不少</h2>
+      <p class="sec-sub">立体星空球 · 8张回忆奖状自动公转 · 鼠标按住左右拖动可自由操控旋转</p>
+    </div>
+
+    <div class="planet-stage">
+      <div class="central-planet"></div>
+
+      <!-- 环绕卡片轨道容器（包含最新提供的三张照片） -->
+      <div class="orbit-ring-3d" id="orbitRing">
+        <!-- 新照片 1：荣誉奖牌与学业证书墙 -->
+        <div class="orbit-card-item">
+          <img src="assets/微信图片_20260815191347_27_2.jpg" alt="学业与竞赛荣誉证书奖状" />
+          <div class="orbit-card-caption">荣誉墙 · 勋章见证</div>
+        </div>
+        <!-- 新照片 2：中国舞考级证书 -->
+        <div class="orbit-card-item">
+          <img src="assets/微信图片_20260815191351_28_2.jpg" alt="中国舞考级证书玖级" />
+          <div class="orbit-card-caption">考级认证 · 中国舞玖级</div>
+        </div>
+        <!-- 新照片 3：团员档案袋 -->
+        <div class="orbit-card-item">
+          <img src="assets/微信图片_20260815191341_26_2.jpg" alt="永州市第一中学团员档案" />
+          <div class="orbit-card-caption">青春印记 · 永州一中</div>
+        </div>
+        <!-- 卡片 4：中国舞练功基本功 -->
+        <div class="orbit-card-item">
+          <img src="assets/基本功展示.jpg" alt="中国舞练功日常" />
+          <div class="orbit-card-caption">中国舞 · 10年功底</div>
+        </div>
+        <!-- 卡片 5：身体管理打卡 -->
+        <div class="orbit-card-item">
+          <img src="assets/photo7.jpg" alt="健身日常打卡" />
+          <div class="orbit-card-caption">身体自律 · 健身日常</div>
+        </div>
+        <!-- 卡片 6：心流习惯 -->
+        <div class="orbit-card-item">
+          <img src="assets/photo8.jpg" alt="日记与冥想习惯" />
+          <div class="orbit-card-caption">心流习惯 · 书法冥想</div>
+        </div>
+        <!-- 卡片 7：抖音博主 -->
+        <div class="orbit-card-item">
+          <img src="assets/抖音主页.jpg" alt="抖音博主主页" />
+          <div class="orbit-card-caption">抖音博主 · 记录日常</div>
+        </div>
+        <!-- 卡片 8：生活感知 -->
+        <div class="orbit-card-item">
+          <img src="assets/photo10.jpg" alt="沉潜与反思" />
+          <div class="orbit-card-caption">沉潜反思 · 认真前行</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 3. PPT 视觉作品矩阵画廊 ═══════════ -->
+  <section id="ppt-works" class="tools-section">
+    <div class="sec-head">
+      <span class="sec-eyebrow">DESIGN & KEYNOTE</span>
+      <h2 class="sec-title">PPT 视觉稿件精选</h2>
+      <p class="sec-sub">从逻辑构架到电影级排版，把每一个主题都打磨成具有叙事张力的幻灯片</p>
+    </div>
+
+    <div class="ppt-gallery-grid">
+      <!-- 稿件 1: The Shadow 影子 -->
+      <div class="ppt-card-item" onclick="alert('《The Shadow 影子》：运用地球几何光照模型与渐变圆锥投影，将天文学光影逻辑融入视觉叙事。');">
+        <div class="ppt-card-inner" style="background: radial-gradient(circle at 70% 30%, #20130d 0%, #0c0908 60%, #060505 100%);">
+          <span class="ppt-meta-num">01 · ASTRONOMY & LIGHT</span>
+          <div>
+            <h4 class="ppt-main-title">The Shadow<br>影子投影论</h4>
+            <p class="ppt-sub-quote">“地球暗影穿越140万公里，月球重新进入太阳光辉，月全食完成。”</p>
+          </div>
+          <span style="font-size:0.75rem; color:var(--accent);">✦ 几何光影与空间视觉</span>
+        </div>
+      </div>
+
+      <!-- 稿件 2: 从考生到玩家 -->
+      <div class="ppt-card-item" onclick="alert('《从考生到玩家》：大学是人生的第一次系统重置，放下标准答案，解锁自我主线。');">
+        <div class="ppt-card-inner" style="background: radial-gradient(circle at 30% 70%, #0d1e2e 0%, #070e17 60%, #03060a 100%);">
+          <span class="ppt-meta-num">02 · SYSTEM RESET</span>
+          <div>
+            <h4 class="ppt-main-title">从考生到玩家</h4>
+            <p class="ppt-sub-quote">“大学，是人生第一次系统重置。放下标准答案，做你自己唯一的自研主线。”</p>
+          </div>
+          <span style="font-size:0.75rem; color:#4aa0e0;">✦ 赛博蓝调与终端排版</span>
+        </div>
+      </div>
+
+      <!-- 稿件 3: 觉醒时刻 -->
+      <div class="ppt-card-item" onclick="alert('《觉醒时刻》：考卷上的答案是别人的，你问出的问题，才是自己的。');">
+        <div class="ppt-card-inner" style="background: radial-gradient(circle at 60% 40%, #15102a 0%, #0a0714 60%, #05040a 100%);">
+          <span class="ppt-meta-num">03 · AWAKENING</span>
+          <div>
+            <h4 class="ppt-main-title">觉醒时刻</h4>
+            <p class="ppt-sub-quote">“考卷上的答案，是别人的；你问的问题，才是自己的。”</p>
+          </div>
+          <span style="font-size:0.75rem; color:#a374ff;">✦ 脉冲神经光网图示</span>
+        </div>
+      </div>
+
+      <!-- 稿件 4: 手上的传送门 -->
+      <div class="ppt-card-item" onclick="alert('《微小方块传送门》：科技不分贵贱，最重要的是用它去探索未知、表达自己。');">
+        <div class="ppt-card-inner" style="background: radial-gradient(circle at 80% 50%, #0a2624 0%, #051413 60%, #020707 100%);">
+          <span class="ppt-meta-num">04 · PORTAL & MOBILE</span>
+          <div>
+            <h4 class="ppt-main-title">人类最强的传送门</h4>
+            <p class="ppt-sub-quote">“你手上的那个小方块，是人类目前最强的传送门——连接全球算力与知识库。”</p>
+          </div>
+          <span style="font-size:0.75rem; color:#17c08d;">✦ 跨维空间与量子虫洞</span>
+        </div>
+      </div>
+
+      <!-- 稿件 5: 科技创造未来 -->
+      <div class="ppt-card-item" onclick="alert('《科技创造未来》：答辩与商业计划书的标准科技化视觉规范，结构严谨、层级分明。');">
+        <div class="ppt-card-inner" style="background: radial-gradient(circle at 40% 40%, #182233 0%, #0b1018 60%, #040609 100%);">
+          <span class="ppt-meta-num">05 · BUSINESS & TECH</span>
+          <div>
+            <h4 class="ppt-main-title">科技创造未来</h4>
+            <p class="ppt-sub-quote">“商务大气、工作汇报、营销策划与活动总结多维度模块化规范。”</p>
+          </div>
+          <span style="font-size:0.75rem; color:#4aa0e0;">✦ 3D 线框地表与信息流</span>
+        </div>
+      </div>
+
+      <!-- 稿件 6: 电影叙事光影 -->
+      <div class="ppt-card-item" onclick="alert('《希望的力量》：用电影胶片画幅重构人物介绍与观点陈述，增强共鸣感。');">
+        <div class="ppt-card-inner" style="background: radial-gradient(circle at 50% 50%, #2b1812 0%, #140b08 60%, #070403 100%);">
+          <span class="ppt-meta-num">06 · FILM NARRATIVE</span>
+          <div>
+            <h4 class="ppt-main-title">希望，永不被囚禁</h4>
+            <p class="ppt-sub-quote">“如同胶片定格的段落，用电影镜头语言讲好答辩现场的故事。”</p>
+          </div>
+          <span style="font-size:0.75rem; color:var(--accent);">✦ 胶片边框与沉浸分镜</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 4. 工具与能力板块 ═══════════ -->
+  <section id="tools" class="tools-section">
+    <p class="tools-lead-quote">
+      <b>工具与能力</b> ── 会用 AI 辅助做项目调研、写商业计划书、做答辩路演材料，把每一个想法都变成看得见的专业成果。
+    </p>
+
+    <div class="tools-grid-box">
+      <div class="tool-frame-card">
+        <span class="tool-tag-en">SEARCH · 调研</span>
+        <h3 class="tool-title-cn">项目调研</h3>
+        <p class="tool-desc-text">用 AI 快速收集行业信息、竞品动态与用户需求，把零散信息整理成清晰的调研结论与洞察报告，为团队决策提供支持。</p>
+        <div class="tool-chips-row">
+          <span class="tool-chip">行业分析</span>
+          <span class="tool-chip">竞品调研</span>
+          <span class="tool-chip">需求洞察</span>
+        </div>
+      </div>
+
+      <div class="tool-frame-card">
+        <span class="tool-tag-en">PLAN · 商业计划书</span>
+        <h3 class="tool-title-cn">商业计划书</h3>
+        <p class="tool-desc-text">借助 AI 搭建商业模式、市场规模测算与财务预估，产出结构完整、逻辑清晰的商业计划书，让项目站得住脚。</p>
+        <div class="tool-chips-row">
+          <span class="tool-chip">商业模式</span>
+          <span class="tool-chip">市场分析</span>
+          <span class="tool-chip">财务测算</span>
+        </div>
+      </div>
+
+      <div class="tool-frame-card">
+        <span class="tool-tag-en">DECK · 答辩与路演</span>
+        <h3 class="tool-title-cn">路演汇报 PPT</h3>
+        <p class="tool-desc-text">熟练使用先锋科技规范设计 PPT，强化信息层级、视觉冲击力与答辩逻辑链条，在竞赛与答辩中给评委留下深刻印象。</p>
+        <div class="tool-chips-row">
+          <span class="tool-chip">PPT 逻辑</span>
+          <span class="tool-chip">美化排版</span>
+          <span class="tool-chip">答辩优化</span>
+        </div>
+      </div>
+
+      <div class="tool-frame-card">
+        <span class="tool-tag-en">DATA · 数据与可视化</span>
+        <h3 class="tool-title-cn">数据与图表</h3>
+        <p class="tool-desc-text">善用 Gemini 等大模型跑通前端数据图表呈现与清洗整理，将晦涩数据转换成直观、易懂的可视化看板。</p>
+        <div class="tool-chips-row">
+          <span class="tool-chip">Gemini</span>
+          <span class="tool-chip">图表可视化</span>
+          <span class="tool-chip">资料库整理</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 5. 个人成果：飞机大战、AI音乐、千里江山图 ═══════════ -->
+  <section id="works" class="works-section">
+    <div class="sec-head">
+      <span class="sec-eyebrow">PORTFOLIO & PROJECTS</span>
+      <h2 class="sec-title">个人成果展示</h2>
+      <p class="sec-sub">从原生网页游戏到音乐生成与传统山水粒子重构，将想法做成扎实生动的小作品</p>
+    </div>
+
+    <div class="works-grid">
+
+      <!-- 成果 01：飞机大战（替换原坦克大战） -->
+      <div class="work-card">
+        <div class="work-banner-plane">
+          <div style="text-align: center; color: #a374ff;">
+            <b style="font-size: 1.55rem; letter-spacing: 0.15em;">✈ 飞机大战 · 战机破空</b><br>
+            <span style="font-size: 0.72rem; color: #c4a8ff; font-family: var(--font-display);">AI-POWERED AIR COMBAT WEBGAME</span>
+          </div>
+        </div>
+        <div class="work-body">
+          <div>
+            <span class="work-tag-header">01 · GAME ENGINEERING</span>
+            <h3 class="work-title">经典飞机大战 · Web 独立游戏</h3>
+            <p class="work-desc">
+              用 AI 协同开发构建的雷电空战游戏。完整实现战机弹幕发射、敌机编队下落算法、血量碰撞判定与分数排行机制。
+            </p>
+          </div>
+          <div class="work-actions-row">
+            <button class="work-btn-play" id="openPlaneGameBtn">
+              ▶ 立即试玩 ↵
+            </button>
+            <a href="https://feijidazhan-dfz.netlify.app/" target="_blank" rel="noopener noreferrer" class="work-btn-outline" title="新标签页打开">
+              ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 成果 02：AI 音乐单曲（可点开试听） -->
+      <div class="work-card">
+        <div class="work-banner-audio">
+          <div class="audio-waves-ani">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
+          <div style="position: absolute; bottom: 12px; font-family: var(--font-display); font-size: 0.8rem; color: var(--accent); letter-spacing: 0.1em;">
+            AI GENERATED TRACK · VOCAL & BEATS
+          </div>
+        </div>
+        <div class="work-body">
+          <div>
+            <span class="work-tag-header">02 · SOUND LAB</span>
+            <h3 class="work-title">AI 原创单曲 · 试听体验</h3>
+            <p class="work-desc">
+              运用生成式音乐大模型创作的旋律小品，主打敢想敢试的跨界跨维表达，探索声音、人声与数字音轨的无限边界。
+            </p>
+
+            <div class="inline-audio-box">
+              <button class="audio-btn-circle" id="aiPlayBtn">▶</button>
+              <div class="audio-progress-wrap">
+                <div class="audio-time-meta">
+                  <span id="aiMusicTrackName">AI Track · Favorite Trouble</span>
+                  <span id="aiMusicTimeDisplay">0:00 / 0:00</span>
+                </div>
+                <div class="audio-bar-rail" id="aiMusicRail">
+                  <div class="audio-bar-filled" id="aiMusicFilled"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="work-actions-row">
+            <button class="work-btn-play" id="aiPlayBtnSub">
+              ♫ 播放 / 暂停单曲
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 成果 03：千里江山图 · 粒子动效 -->
+      <div class="work-card">
+        <div class="work-banner-landscape">
+          <div class="landscape-glow"></div>
+          <div style="text-align: center; color: #17c08d; position: relative; z-index: 2;">
+            <b style="font-size: 1.45rem; letter-spacing: 0.15em; text-shadow: 0 0 12px rgba(23, 192, 141, 0.6);">千里江山图</b><br>
+            <span style="font-size: 0.72rem; color: #a2e8dd; font-family: var(--font-display);">PARTICLE LANDSCAPE INTERACTION</span>
+          </div>
+        </div>
+        <div class="work-body">
+          <div>
+            <span class="work-tag-header" style="color: #17c08d;">03 · CREATIVE CODING</span>
+            <h3 class="work-title">千里江山图 · 粒子动效</h3>
+            <p class="work-desc">
+              将传统青绿山水《千里江山图》的壮阔气象与现代 WebGL 交互粒子流体深度融合，实现流体粒子起伏与传统山河意境的交融碰撞。
+            </p>
+          </div>
+          <div class="work-actions-row">
+            <button class="work-btn-play" id="openLandscapeBtn" style="background: linear-gradient(135deg, #17c08d 0%, #0d825f 100%); color: #fff;">
+              ✦ 在线沉浸体验 ↵
+            </button>
+            <a href="https://mountainsandrivers.netlify.app/" target="_blank" rel="noopener noreferrer" class="work-btn-outline" title="新标签页打开">
+              ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 网页内嵌体验弹窗（飞机大战 & 千里江山图通用） -->
+  <div class="game-modal-overlay" id="workModal">
+    <div class="game-modal-window">
+      <div class="game-modal-header">
+        <b id="modalTitle">★ 项目在线试玩体验</b>
+        <button class="game-modal-close" id="closeWorkModal">&times;</button>
+      </div>
+      <div class="game-modal-body">
+        <iframe id="modalIframe" src="" title="项目体验窗口"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ AI 证书真实走马灯（无黑方框 + 点击放大 Lightbox） ═══════════ -->
+  <section id="certs" class="works-section">
+    <div class="sec-head">
+      <span class="sec-eyebrow">CREDENTIALS</span>
+      <h2 class="sec-title">AI 专业认证与技能证书</h2>
+      <p class="sec-sub">已收录全部真实证书 · 鼠标点击任意一张即可全屏放大查看高清细节</p>
+    </div>
+    
+    <div class="certs-wrapper">
+      <div class="certs-track" id="certsTrack">
+        <!-- 纯净加载 7 张真实证书，彻底删去无图黑框 -->
+        <div class="cert-item-card" data-img="assets/人工智能训练师（高级）-徐菲-20260903.jpg">
+          <img src="assets/人工智能训练师（高级）-徐菲-20260903.jpg" alt="人工智能训练师高级" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/Ai大学认证证书.png">
+          <img src="assets/Ai大学认证证书.png" alt="AI大学认证证书" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/Ai大学认证证书 (1).png">
+          <img src="assets/Ai大学认证证书 (1).png" alt="AI大学认证证书 1" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/Ai大学认证证书 (2).png">
+          <img src="assets/Ai大学认证证书 (2).png" alt="AI大学认证证书 2" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/258501-aFavEp9uU06gnui6nLm1qg.png">
+          <img src="assets/258501-aFavEp9uU06gnui6nLm1qg.png" alt="认证证书 1" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/258501-KHVe6mhl7xaFfsjKWMvSjw.png">
+          <img src="assets/258501-KHVe6mhl7xaFfsjKWMvSjw.png" alt="认证证书 2" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/img_4c65c423ec9179b3ed2093c467f6841d.png">
+          <img src="assets/img_4c65c423ec9179b3ed2093c467f6841d.png" alt="阿里云认证" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+
+        <!-- 循环复制实现无缝无限滚动 -->
+        <div class="cert-item-card" data-img="assets/人工智能训练师（高级）-徐菲-20260903.jpg">
+          <img src="assets/人工智能训练师（高级）-徐菲-20260903.jpg" alt="人工智能训练师高级" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/Ai大学认证证书.png">
+          <img src="assets/Ai大学认证证书.png" alt="AI大学认证证书" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/Ai大学认证证书 (1).png">
+          <img src="assets/Ai大学认证证书 (1).png" alt="AI大学认证证书 1" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/Ai大学认证证书 (2).png">
+          <img src="assets/Ai大学认证证书 (2).png" alt="AI大学认证证书 2" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/258501-aFavEp9uU06gnui6nLm1qg.png">
+          <img src="assets/258501-aFavEp9uU06gnui6nLm1qg.png" alt="认证证书 1" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/258501-KHVe6mhl7xaFfsjKWMvSjw.png">
+          <img src="assets/258501-KHVe6mhl7xaFfsjKWMvSjw.png" alt="认证证书 2" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+        <div class="cert-item-card" data-img="assets/img_4c65c423ec9179b3ed2093c467f6841d.png">
+          <img src="assets/img_4c65c423ec9179b3ed2093c467f6841d.png" alt="阿里云认证" />
+          <div class="cert-hover-hint">🔍 点击放大</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 证书高清放大 LightBox 弹窗 -->
+  <div class="cert-lightbox-overlay" id="certLightbox">
+    <img src="" alt="证书放大预览" class="cert-lightbox-img" id="certLightboxImg" />
+  </div>
+
+  <!-- ═══════════ 留言板 ═══════════ -->
+  <section id="contact" class="works-section">
+    <div class="sec-head">
+      <span class="sec-eyebrow">GET IN TOUCH</span>
+      <h2 class="sec-title">留言板 · 期待相遇</h2>
+      <p class="sec-sub">如果你想和我聊聊想法、探讨竞赛或共同做些不一样的事，欢迎随时留言。</p>
+    </div>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 2.5rem; max-width: 600px; margin: 0 auto;">
+      <form onsubmit="event.preventDefault(); alert('留言已保存至本地，感谢你的联系！');">
+        <div style="margin-bottom: 1.2rem;">
+          <label style="display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.4rem;">你的称呼 / NAME</label>
+          <input type="text" style="width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle); padding:0.8rem; color:#fff; border-radius:4px;" placeholder="怎么称呼你？" required />
+        </div>
+        <div style="margin-bottom: 1.2rem;">
+          <label style="display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.4rem;">联系方式 / EMAIL OR WECHAT</label>
+          <input type="text" style="width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle); padding:0.8rem; color:#fff; border-radius:4px;" placeholder="邮箱或微信号" required />
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display:block; font-size:0.85rem; color:var(--text-muted); margin-bottom:0.4rem;">留言内容 / MESSAGE</label>
+          <textarea rows="4" style="width:100%; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle); padding:0.8rem; color:#fff; border-radius:4px;" placeholder="想对我说点什么..." required></textarea>
+        </div>
+        <button type="submit" class="work-btn-play" style="width: 100%;">发送留言 ↵</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 徐菲 XUFEI · 接受自己的普通，然后尽全力与众不同。</p>
+  </footer>
+
+  <!-- ═══════════ 核心脚本 ═══════════ -->
+  <script>
+    // 1. 开屏进度条播放完毕后无缝揭幕 + 自动启动背景音乐 (5c2b6dbfc09470cd1225c02deb96a078.mp4)
+    (function () {
+      const loader = document.getElementById('siteLoader');
+      const bar = document.getElementById('loaderBar');
+      const txt = document.getElementById('loaderPercent');
+      const bgm = document.getElementById('bgmAudio');
+      const bgmChip = document.getElementById('bgmToggleBtn');
+      let p = 0;
+      let done = false;
+
+      function startBgm() {
+        if (!bgm) return;
+        bgm.volume = 0.5;
+        const playPromise = bgm.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            if (bgmChip) bgmChip.classList.add('playing');
+          }).catch(() => {
+            // 现代浏览器 Autoplay 防御：用户与网页发生首次交互时立即解封起播
+            const unlockAudio = () => {
+              bgm.play().then(() => {
+                if (bgmChip) bgmChip.classList.add('playing');
+              });
+              window.removeEventListener('pointerdown', unlockAudio);
+              window.removeEventListener('keydown', unlockAudio);
+            };
+            window.addEventListener('pointerdown', unlockAudio);
+            window.addEventListener('keydown', unlockAudio);
+          });
+        }
+      }
+
+      function enter() {
+        if (done) return;
+        done = true;
+        if (bar) bar.style.width = '100%';
+        if (txt) txt.innerText = '100%';
+        if (loader) {
+          loader.classList.add('dissolve');
+          setTimeout(() => loader.style.display = 'none', 800);
+        }
+        startBgm();
+      }
+
+      const timer = setInterval(() => {
+        p += Math.floor(Math.random() * 18) + 12;
+        if (p >= 100) {
+          clearInterval(timer);
+          enter();
+        } else {
+          if (bar) bar.style.width = p + '%';
+          if (txt) txt.innerText = p + '%';
+        }
+      }, 50);
+
+      setTimeout(() => { clearInterval(timer); enter(); }, 1100);
+      if (loader) loader.addEventListener('click', () => { clearInterval(timer); enter(); });
+    })();
+
+    // 2. 首页多维画卷左右切换
+    (function () {
+      const strip = document.getElementById('carouselStrip');
+      const slides = document.querySelectorAll('.carousel-slide');
+      const dots = document.querySelectorAll('.carousel-dot');
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      let cur = 0;
+      const total = slides.length;
+
+      function toSlide(idx) {
+        if (idx < 0) idx = total - 1;
+        if (idx >= total) idx = 0;
+        cur = idx;
+        strip.style.transform = `translateX(-${cur * 100}vw)`;
+        slides.forEach((s, i) => s.classList.toggle('active', i === cur));
+        dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+      }
+
+      if (btnPrev) btnPrev.addEventListener('click', () => toSlide(cur - 1));
+      if (btnNext) btnNext.addEventListener('click', () => toSlide(cur + 1));
+      dots.forEach(dot => {
+        dot.addEventListener('click', (e) => toSlide(parseInt(e.target.dataset.idx, 10)));
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') toSlide(cur - 1);
+        if (e.key === 'ArrowRight') toSlide(cur + 1);
+      });
+    })();
+
+    // 3. 3D 旋转星球系统（8张照片环绕 + 手势自由拖拽操控）
+    (function () {
+      const ring = document.getElementById('orbitRing');
+      const cards = document.querySelectorAll('.orbit-card-item');
+      if (!ring || cards.length === 0) return;
+
+      const totalCards = cards.length;
+      const radius = window.innerWidth > 992 ? 330 : 220;
+      let angle = 0;
+      let isDragging = false;
+      let startX = 0;
+      let dragVelocity = 0;
+
+      cards.forEach((card, i) => {
+        const cardAngle = (360 / totalCards) * i;
+        card.style.transform = `rotateY(${cardAngle}deg) translateZ(${radius}px)`;
+      });
+
+      function animateOrbit() {
+        if (!isDragging) {
+          angle += 0.25 + dragVelocity;
+          dragVelocity *= 0.95;
+        }
+        ring.style.transform = `rotateX(15deg) rotateY(${angle}deg)`;
+        requestAnimationFrame(animateOrbit);
+      }
+      animateOrbit();
+
+      ring.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - startX;
+        angle += dx * 0.45;
+        dragVelocity = dx * 0.08;
+        startX = e.clientX;
+      });
+
+      window.addEventListener('pointerup', () => { isDragging = false; });
+    })();
+
+    // 4. 赛博流动波纹与数据流 Canvas
+    (function () {
+      const canvas = document.getElementById('cyberFlowCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      let step = 0;
+      const waves = [
+        { yOffset: 0.88, length: 0.0035, amp: 28, speed: 0.015, color: 'rgba(255, 85, 0, 0.22)' },
+        { yOffset: 0.92, length: 0.0022, amp: 40, speed: 0.012, color: 'rgba(255, 110, 30, 0.16)' },
+        { yOffset: 0.95, length: 0.005, amp: 20, speed: 0.02, color: 'rgba(0, 200, 255, 0.12)' }
+      ];
+
+      const streams = [];
+      for (let i = 0; i < 28; i++) {
+        streams.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          len: 40 + Math.random() * 80,
+          speed: 1.2 + Math.random() * 2,
+          alpha: 0.1 + Math.random() * 0.35
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        step += 1;
+
+        streams.forEach(st => {
+          st.y -= st.speed;
+          if (st.y < -st.len) {
+            st.y = h + Math.random() * 50;
+            st.x = Math.random() * w;
+          }
+          ctx.beginPath();
+          ctx.moveTo(st.x, st.y);
+          ctx.lineTo(st.x, st.y + st.len);
+          ctx.strokeStyle = `rgba(255, 85, 0, ${st.alpha})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(st.x, st.y, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 180, 100, ${st.alpha * 1.5})`;
+          ctx.fill();
+        });
+
+        waves.forEach(wv => {
+          ctx.beginPath();
+          const baseH = h * wv.yOffset;
+          ctx.moveTo(0, baseH);
+          for (let x = 0; x <= w; x += 12) {
+            const y = baseH + Math.sin(x * wv.length + step * wv.speed) * wv.amp;
+            ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = wv.color;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // 5. 飞机大战与千里江山图内嵌弹窗
+    (function () {
+      const modal = document.getElementById('workModal');
+      const iframe = document.getElementById('modalIframe');
+      const modalTitle = document.getElementById('modalTitle');
+      const closeBtn = document.getElementById('closeWorkModal');
+      const openPlaneBtn = document.getElementById('openPlaneGameBtn');
+      const openLandscapeBtn = document.getElementById('openLandscapeBtn');
+
+      function openModal(title, url) {
+        modalTitle.textContent = title;
+        iframe.src = url;
+        modal.classList.add('active');
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        iframe.src = '';
+      }
+
+      if (openPlaneBtn) {
+        openPlaneBtn.addEventListener('click', () => {
+          openModal('✈ 经典飞机大战 · 在线试玩', 'https://feijidazhan-dfz.netlify.app/');
+        });
+      }
+
+      if (openLandscapeBtn) {
+        openLandscapeBtn.addEventListener('click', () => {
+          openModal('✦ 千里江山图 · WebGL 粒子动效体验', 'https://mountainsandrivers.netlify.app/');
+        });
+      }
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    })();
+
+    // 6. AI 音乐试听播放器控制（绑定 assets/ai_music.mp3）
+    (function () {
+      const audio = document.getElementById('aiMusicAudio');
+      const btn = document.getElementById('aiPlayBtn');
+      const btnSub = document.getElementById('aiPlayBtnSub');
+      const timeDisplay = document.getElementById('aiMusicTimeDisplay');
+      const rail = document.getElementById('aiMusicRail');
+      const filled = document.getElementById('aiMusicFilled');
+
+      function formatTime(s) {
+        if (isNaN(s)) return '0:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return `${m}:${sec < 10 ? '0' : ''}${sec}`;
+      }
+
+      function togglePlay() {
+        if (audio.paused) {
+          audio.play().then(() => {
+            btn.textContent = '❚❚';
+            btnSub.textContent = '❚❚ 暂停播放';
+          }).catch(e => {
+            alert('请确认 assets/ 文件夹下存在 ai_music.mp3 文件。');
+          });
+        } else {
+          audio.pause();
+          btn.textContent = '▶';
+          btnSub.textContent = '♫ 播放单曲';
+        }
+      }
+
+      if (btn) btn.addEventListener('click', togglePlay);
+      if (btnSub) btnSub.addEventListener('click', togglePlay);
+
+      audio.addEventListener('timeupdate', () => {
+        const cur = audio.currentTime;
+        const dur = audio.duration || 0;
+        timeDisplay.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+        if (dur > 0) filled.style.width = `${(cur / dur) * 100}%`;
+      });
+
+      audio.addEventListener('ended', () => {
+        btn.textContent = '▶';
+        btnSub.textContent = '♫ 播放单曲';
+        filled.style.width = '0%';
+      });
+
+      if (rail) {
+        rail.addEventListener('click', (e) => {
+          const rect = rail.getBoundingClientRect();
+          const p = (e.clientX - rect.left) / rect.width;
+          if (audio.duration) audio.currentTime = p * audio.duration;
+        });
+      }
+    })();
+
+    // 7. FireFly7 背景音乐（5c2b6dbfc09470cd1225c02deb96a078.mp4）常驻电台按钮控制
+    (function () {
+      const bgm = document.getElementById('bgmAudio');
+      const chip = document.getElementById('bgmToggleBtn');
+      const label = document.getElementById('bgmStatusLabel');
+
+      if (chip && bgm) {
+        chip.addEventListener('click', () => {
+          if (bgm.paused) {
+            bgm.play().then(() => {
+              chip.classList.add('playing');
+              label.textContent = 'BGM: 播放中 ♫';
+            }).catch(() => {
+              alert('未能在 assets/ 找到 5c2b6dbfc09470cd1225c02deb96a078.mp4 文件。');
+            });
+          } else {
+            bgm.pause();
+            chip.classList.remove('playing');
+            label.textContent = 'BGM: 已暂停';
+          }
+        });
+      }
+    })();
+
+    // 8. 证书点击全屏放大 Lightbox 引擎
+    (function () {
+      const lightbox = document.getElementById('certLightbox');
+      const lightboxImg = document.getElementById('certLightboxImg');
+      const cards = document.querySelectorAll('.cert-item-card');
+
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          const src = card.getAttribute('data-img');
+          if (src && lightbox && lightboxImg) {
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+          }
+        });
+      });
+
+      if (lightbox) {
+        lightbox.addEventListener('click', () => {
+          lightbox.classList.remove('active');
+          lightboxImg.src = '';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
